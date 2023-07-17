@@ -19,14 +19,15 @@ const server = http.createServer((req, res) => {
       console.log(chunk);
       body.push(chunk);
     }); // 요청에 대한 모든 데이터를 얻을 때까지 함수가 실행됨
-    req.on("end", () => {
+    return req.on("end", () => {
       const parsedBody = Buffer.concat(body).toString();
       const message = parsedBody.split("=")[1];
-      fs.writeFileSync("message.txt", message);
+      fs.writeFile("message.txt", message, (err) => {
+        res.statusCode = 302;
+        res.setHeader("Location", "/");
+        return res.end();
+      }); // Sync는 동기화임. 이 파일 생성 전까지 코드 실행을 막는 특별한 메소드임
     });
-    res.statusCode = 302;
-    res.setHeader("Location", "/");
-    return res.end();
   }
   //   process.exit(); 서버 종료
   res.setHeader("Content-Type", "text/html");
