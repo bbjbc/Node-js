@@ -1,4 +1,4 @@
-const http = require("http");
+// const http = require("http");
 
 const express = require("express");
 
@@ -14,11 +14,16 @@ app.use((req, res, next) => {
   res.send("<h1>hello from Express!</h1>"); // setHeader()로도 설정 가능하지만 send()로 해줘도 헤더는 알아서 파악함
 }); // 새로운 미들웨어 사용가능
 
-const server = http.createServer(app);
+app.listen(3000);
+// const server = http.createServer(app);
+// server.listen(3000);
+// 이 2줄을 간단하게 사용 가능함
+
+// const server = http.createServer(app);
 // 이것이 바로 Node.js의 주된 Event Driven Architecture(EDA)임
 // 이것이 바로 createServer의 콜백 함수임
 
-server.listen(3000);
+// server.listen(3000);
 // listen은 node가 스크립트를 바로 종료하지 않고 계속 실행되면서 listen함
 
 // 1. 이렇게 함수를 정의하여 불러올 수 있음
