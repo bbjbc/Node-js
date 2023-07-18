@@ -4,15 +4,21 @@ const express = require("express");
 
 const app = express();
 
-app.use((req, res, next) => {
-  console.log("In the middleware!");
-  next(); // 다음 미들웨어로 요청을 이동시키려면 next()를 사용하면 됨
+app.use("/", (req, res, next) => {
+  console.log("This always runs!");
+  next();
+});
+
+app.use("/add-product", (req, res, next) => {
+  console.log("In another middleware!");
+  res.send("<h1>The 'Add Product' Page</h1>"); // setHeader()로도 설정 가능하지만 send()로 해줘도 헤더는 알아서 파악함
 }); // 새로운 미들웨어 사용가능
 
-app.use((req, res, next) => {
-  console.log("In another middleware!");
+app.use("/", (req, res, next) => {
+  console.log("In another middleware2!");
   res.send("<h1>hello from Express!</h1>"); // setHeader()로도 설정 가능하지만 send()로 해줘도 헤더는 알아서 파악함
 }); // 새로운 미들웨어 사용가능
+// next(); 다음 미들웨어로 요청을 이동시키려면 next()를 사용하면 됨
 
 app.listen(3000);
 // const server = http.createServer(app);
