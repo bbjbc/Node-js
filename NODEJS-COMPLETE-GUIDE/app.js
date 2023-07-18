@@ -1,8 +1,19 @@
 const http = require("http");
 
-const routes = require("./routes");
+const express = require("express");
 
-const server = http.createServer(routes);
+const app = express();
+
+app.use((req, res, next) => {
+  console.log("In the middleware!");
+  next(); // 다음 미들웨어로 요청을 이동시키려면 next()를 사용하면 됨
+}); // 새로운 미들웨어 사용가능
+
+app.use((req, res, next) => {
+  console.log("In another middleware!");
+}); // 새로운 미들웨어 사용가능
+
+const server = http.createServer(app);
 // 이것이 바로 Node.js의 주된 Event Driven Architecture(EDA)임
 // 이것이 바로 createServer의 콜백 함수임
 
