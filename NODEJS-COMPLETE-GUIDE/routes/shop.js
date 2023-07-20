@@ -1,10 +1,13 @@
+const path = require("path");
+
 const express = require("express");
 
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  res.send("<h1>hello from Express!</h1>"); // setHeader()로도 설정 가능하지만 send()로 해줘도 헤더는 알아서 파악함
-}); // 새로운 미들웨어 사용가능
-// next(); 다음 미들웨어로 요청을 이동시키려면 next()를 사용하면 됨
+  res.sendFile(path.join(__dirname, "../", "views", "shop.html")); // join은 마지막에 경로를 출력함. 그리고 여러 세그먼트를 이어 붙여서 이 경로를 구축함
+  // __dirname은 운영체제의 절대 경로를 이 프로젝트 폴더로 고정해주는 전역 변수임
+  // 현재 routes 폴더이기 때문에 옆 폴더로 이동하기 위해서 ../
+});
 
 module.exports = router;
