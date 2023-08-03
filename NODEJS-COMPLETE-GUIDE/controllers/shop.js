@@ -132,17 +132,12 @@ exports.postCartDeleteProduct = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.getOrders = (req, res, next) => {
-  res.render("shop/orders", {
-    path: "/orders",
-    pageTitle: "Your Orders",
-  });
-};
-
 exports.postOrders = (req, res, next) => {
+  let fechedCart;
   req.user
     .getCart()
     .then((cart) => {
+      fetchedCart = cart;
       return cart.getProducts();
     })
     .then((products) => {
@@ -159,14 +154,30 @@ exports.postOrders = (req, res, next) => {
         .catch((err) => console.log(err));
     })
     .then((result) => {
+      return fetchedCart.setProducts(null);
+    })
+    .then((result) => {
       res.redirect("/order");
     })
     .catch((err) => console.log(err));
 };
 
-exports.getCheckout = (req, res, next) => {
-  res.render("shop/checkout", {
-    path: "/checkout",
-    pageTitle: "Checkout",
-  });
+exports.getOrders = (req, res, next) => {
+  req.user
+    .getOrders({ include: ["products"] }) // order와 관련된 products까지 가져와서 주문과 주문에 해당되는 제품을 포함한 배열을 제공하도록 하는 것임
+    .then((orders) => {
+      res.render("shop/orders", {
+        path: "/orders",
+        pageTitle: "Your Orders",
+        orders: orders,
+      });
+    })
+    .catch((err) => console.log(err));
 };
+
+// exports.getCheckout = (req, res, next) => {
+//   res.render("shop/checkout", {
+//     path: "/checkout",
+//     pageTitle: "Checkout",
+//   });
+// };
