@@ -107,14 +107,14 @@ exports.postOrders = (req, res, next) => {
   req.user
     .addOrder()
     .then((result) => {
-      res.redirect("/order");
+      res.redirect("/orders");
     })
     .catch((err) => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
   req.user
-    .getOrders({ include: ["products"] }) // order와 관련된 products까지 가져와서 주문과 주문에 해당되는 제품을 포함한 배열을 제공하도록 하는 것임
+    .getOrders() // order와 관련된 products까지 가져와서 주문과 주문에 해당되는 제품을 포함한 배열을 제공하도록 하는 것임
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
