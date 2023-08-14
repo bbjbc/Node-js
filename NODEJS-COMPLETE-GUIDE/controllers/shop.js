@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Order = require("../models/order");
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -107,7 +108,21 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.postOrders = (req, res, next) => {
   req.user
-    .addOrder()
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items.map((i) => {
+        return { product: i.productId, quantity: i.quantity };
+      });
+      const order = new Order({
+        user: {
+          name: req.user.name,
+          email: req.user.email,
+          userId: req.user,
+        },
+        products: products,
+      });
+      return order.save();
+    })
     .then((result) => {
       res.redirect("/orders");
     })
@@ -116,7 +131,7 @@ exports.postOrders = (req, res, next) => {
 
 exports.getOrders = (req, res, next) => {
   req.user
-    .getOrders() // order와 관련된 products까지 가져와서 주문과 주문에 해당되는 제품을 포함한 배열을 제공하도록 하는 것임
+    .getOrders()
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
