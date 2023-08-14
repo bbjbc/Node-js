@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const errorController = require("./controllers/error");
-// const User = require("./models/user");
+const User = require("./models/user");
 
 const app = express();
 
@@ -21,14 +21,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // extended는 비표준 대상의 분성이 가능한지를 나타냄
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use((req, res, next) => {
-//   User.findById("64d26231ce7e87e124756d8e")
-//     .then((user) => {
-//       req.user = new User(user.name, user.email, user.cart, user._id);
-//       next();
-//     })
-//     .catch((err) => console.log(err));
-// });
+app.use((req, res, next) => {
+  User.findById("64d9e8ca87e92f710a48e40d")
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
@@ -39,7 +39,22 @@ mongoose
   .connect(
     "mongodb+srv://aoo4550:9FDtsrk2VU9h9IAp@cluster0.u8voidr.mongodb.net/shop?retryWrites=true&w=majority"
   )
-  .then((result) => app.listen(3000))
+  .then((result) => {
+    User.findOne().then((user) => {
+      if (!user) {
+        const user = new User({
+          name: "Chan",
+          email: "chan@test.com",
+          cart: {
+            items: [],
+          },
+        });
+        user.save();
+      }
+    });
+
+    app.listen(3000);
+  })
   .catch((err) => {
     console.log(err);
   });
