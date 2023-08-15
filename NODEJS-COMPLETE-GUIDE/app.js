@@ -5,11 +5,19 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
 
+const MONGODB_URI =
+  "mongodb+srv://aoo4550:9FDtsrk2VU9h9IAp@cluster0.u8voidr.mongodb.net/shop";
+
 const app = express();
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: "sessions",
+});
 
 app.set("view engine", "ejs");
 // Express 애플리케이션 전체에 어떤 값이든지 설정 가능
@@ -23,7 +31,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // extended는 비표준 대상의 분성이 가능한지를 나타냄
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
-  session({ secret: "my secret", resave: false, saveUninitialized: false })
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
 );
 
 app.use((req, res, next) => {
