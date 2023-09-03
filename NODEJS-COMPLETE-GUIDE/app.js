@@ -28,7 +28,13 @@ const fileStorage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + "-" + file.originalname);
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고 2자리로 포맷팅
+    const day = date.getDate().toString().padStart(2, "0"); // 일자를 2자리로 포맷팅
+
+    const formattedDate = `${year}-${month}-${day}`;
+    cb(null, formattedDate + "-" + file.originalname);
   },
 });
 
