@@ -39,7 +39,7 @@ exports.getSignup = (req, res, next) => {
     oldInput: {
       email: "",
       password: "",
-      confirmpassword: req.body.confirmPassword,
+      confirmPassword: "",
     },
     validationErrors: [],
   });
@@ -51,7 +51,6 @@ exports.postLogin = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array());
     return res.status(422).render("auth/login", {
       path: "/login",
       pageTitle: "Login",
@@ -115,6 +114,7 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.array());
