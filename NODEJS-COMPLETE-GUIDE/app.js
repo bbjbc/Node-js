@@ -8,6 +8,7 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash");
+const multer = require("multer");
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
@@ -32,6 +33,7 @@ const authRoutes = require("./routes/auth");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 // extended는 비표준 대상의 분성이 가능한지를 나타냄
+app.use(multer({ dest: "images" }).single("image"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
