@@ -5,7 +5,8 @@ const PDFDocument = require("pdfkit");
 
 const Product = require("../models/product");
 const Order = require("../models/order");
-const order = require("../models/order");
+
+const ITEMS_PER_PAGE = 2;
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -47,7 +48,10 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
+  const page = req.query.page;
   Product.find()
+    .skip((page - 1) * ITEMS_PER_PAGE) // 결과 중 첫 X개의 데이터 생략
+    .limit(ITEMS_PER_PAGE) // 데이터 양을 지정 숫자로 제한
     .then((products) => {
       res.render("shop/index", {
         prods: products,
