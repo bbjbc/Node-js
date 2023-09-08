@@ -188,6 +188,21 @@ exports.getCheckout = (req, res, next) => {
             quantity: p.quantity,
           };
         }),
+        // return stripe.checkout.sessions.create({
+        //   mode: "payment",
+        //   line_items: products.map((p) => {
+        //     return {
+        //       price_data: {
+        //         currency: "usd",
+        //         product_data: {
+        //           name: p.productId.title,
+        //           description: p.productId.description,
+        //         },
+        //         unit_amount: p.productId.price, // 가격을 센트 단위로 변환
+        //       },
+        //       quantity: p.quantity,
+        //     };
+        //   }),
         success_url:
           req.protocol + "://" + req.get("host") + "/checkout/success", // => http://localhost:3000
         cancel_url: req.protocol + "://" + req.get("host") + "/checkout/cancel",
