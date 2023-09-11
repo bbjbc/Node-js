@@ -20,7 +20,7 @@ const postSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true } // mongoose가 자동으로 createdAt, updatedAt 필드를 자동 생성해줌
 );
 
 module.exports = mongoose.model("Post", postSchema);
