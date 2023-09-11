@@ -22,6 +22,12 @@ exports.createPost = (req, res, next) => {
   res.status(201).json({
     // 201은 리소스 생성을 나타냄
     message: "Post created successfully!",
-    post: { id: new Date(), title: title, content: content },
+    post: {
+      _id: new Date(),
+      title: title,
+      content: content,
+      creator: { name: "Boongranii" },
+      createdAt: new Date(),
+    },
   });
 };
