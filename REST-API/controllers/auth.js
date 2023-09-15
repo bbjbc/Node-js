@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 
@@ -55,6 +56,16 @@ exports.login = (req, res, next) => {
         error.statusCode = 401;
         throw error;
       }
+      const token = jwt.sign(
+        {
+          // 새로운 서명을 만듦
+          email: loadedUser.email,
+          userId: loadedUser._id.toString(),
+        },
+        "somesupersecretsecret",
+        { expiresIn: "1h" }
+      ); // 2번째 인수는 가입에 사용된 비공개 키, 3번째 인수는 토큰의 유효기간
+      res.status(200).json({ token: token, userId: loadedUser._id.toString() });
     })
     .catch((err) => {
       if (!err.statusCode) {
