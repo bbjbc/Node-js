@@ -18,13 +18,11 @@ exports.getPosts = (req, res, next) => {
         .limit(perPage);
     })
     .then((posts) => {
-      res
-        .status(200)
-        .json({
-          message: "Fetched posts successfully.",
-          posts: posts,
-          totalItems: totalItems,
-        });
+      res.status(200).json({
+        message: "Fetched posts successfully.",
+        posts: posts,
+        totalItems: totalItems,
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -58,7 +56,6 @@ exports.createPost = (req, res, next) => {
   post
     .save()
     .then((result) => {
-      console.log(result);
       res.status(201).json({
         // 201은 리소스 생성을 나타냄
         message: "Post created successfully!",
@@ -164,7 +161,5 @@ exports.deletePost = (req, res, next) => {
 
 const clearImage = (filePath) => {
   filePath = path.join(__dirname, "..", filePath);
-  fs.unlink(filePath, (err) => {
-    console.log(err);
-  });
+  fs.unlink(filePath, (err) => console.log(err));
 };
