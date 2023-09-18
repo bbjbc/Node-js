@@ -61,6 +61,10 @@ mongoose
     "mongodb+srv://aoo4550:9FDtsrk2VU9h9IAp@cluster0.u8voidr.mongodb.net/messages"
   )
   .then((result) => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    const io = require("socket.io")(server);
+    io.on("connection", (socket) => {
+      console.log("Client connected");
+    });
   })
   .catch((err) => console.log(err));
