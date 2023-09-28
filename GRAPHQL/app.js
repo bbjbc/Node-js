@@ -66,12 +66,10 @@ app.put("/post-image", (req, res, next) => {
   if (req.body.oldPath) {
     clearImage(req.body.oldPath);
   }
-  return res
-    .status(201)
-    .json({
-      message: "File stored.",
-      filePath: req.file.path.replace("\\", "/"),
-    });
+  return res.status(201).json({
+    message: "File stored.",
+    filePath: req.file.path.replace("\\", "/"),
+  });
 });
 
 app.use(
@@ -111,6 +109,12 @@ mongoose
   .catch((err) => console.log(err));
 
 const clearImage = (filePath) => {
-  filePath = path.join(__dirname, "..", filePath);
-  fs.unlink(filePath, (err) => console.log(err));
+  filePath = path.join(__dirname, filePath);
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error("Error deleting file: ", err);
+    } else {
+      console.log("File deleted successfully: ", filePath);
+    }
+  });
 };
