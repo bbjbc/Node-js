@@ -1,6 +1,6 @@
 // const http = require("http");
 const path = require("path");
-const env = require("dotenv").config();
+const fs = require("fs");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -10,8 +10,10 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash");
 const multer = require("multer");
+const env = require("dotenv").config();
 const helmet = require("helmet");
 const compression = require("compression");
+const morgan = require("morgan");
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
@@ -60,8 +62,12 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
-app.use(helmet());
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
 app.use(compression());
+app.use(morgan("combined", { stream: accessLogStream })); // 요청 데이터를 파일에 로그 기록하여 항상 서버의 현황을 파악할 수 있게 도와줌
 
 app.use(bodyParser.urlencoded({ extended: false }));
 // extended는 비표준 대상의 분성이 가능한지를 나타냄
