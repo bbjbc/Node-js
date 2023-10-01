@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "set NODE_ENV=production&& set MONGO_USER=aoo4550&& set MONGO_PASSWORD=9FDtsrk2VU9h9IAp&& set STRIPE_KEY=sk_test_51NnjELJ2sWuXGhsGRwubCSbftZNzsZIwEuW2nN29Ts8zaw9uoq7wnNFwypEU8ehfriVP7ekcjHfHN7IdGefluXXB009JLhKZJX&& set MONGO_DEFAULT_DATABASE=shop&& node app.js",
+    "start-server": "node app.js",
+    "start:dev": "nodemon app.js"
   },
   "author": "Byeongchan",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "connect-mongodb-session": "^3.1.1",
     "csrf-csrf": "^3.0.0",
     "csurf": "^1.11.0",
+    "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.0",
